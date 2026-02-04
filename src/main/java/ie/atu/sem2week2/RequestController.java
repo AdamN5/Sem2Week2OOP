@@ -28,4 +28,42 @@ public class RequestController {
         return person;
     }
 
+    @GetMapping("/calculate")
+    public Calculation calculate(
+            @RequestParam int num1,
+            @RequestParam int num2,
+            @RequestParam String operation) {
+
+        double result;
+
+        switch(operation.toLowerCase()) {
+
+            case "add":
+                result = num1 + num2;
+                break;
+
+            case "subtract":
+                result = num1 - num2;
+                break;
+
+            case "multiply":
+                result = num1 * num2;
+                break;
+
+            case "divide":
+
+                if(num2 == 0){
+                    return new Calculation("Divide by zero ERROR!", 0);
+                }
+
+                result = (double) num1 / num2;
+                break;
+
+            default:
+                throw new IllegalArgumentException("Invalid operation. Use add, subtract, multiply, or divide.");
+        }
+
+        return new Calculation(operation, result);
+    }
+
 }
